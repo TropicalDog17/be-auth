@@ -79,7 +79,7 @@ app.post("/login", (req, res) => {
       });
     });
 });
-app.get("/free-endpoint", auth, (req, res) => {
+app.get("/free-endpoint", (req, res) => {
   res.json({ message: "Free to access!" });
 });
 app.get("/auth-endpoint", auth, (req, res) => {
