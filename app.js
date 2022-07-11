@@ -80,9 +80,9 @@ app.post("/login", (req, res) => {
     });
 });
 app.get("/free-endpoint", (req, res) => {
-  res.json({ message: "Free to access!" });
+  res.status(200).json({ message: "Free to access!" });
 });
 app.get("/auth-endpoint", auth, (req, res) => {
-  res.json({ message: "You are authorized to access me!" });
+  res.status(200).json({ message: "You are authorized to access me!" });
 });
 module.exports = app;
