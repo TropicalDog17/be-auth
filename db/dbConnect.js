@@ -13,4 +13,5 @@ async function dbConnect() {
     console.log("Unable to connect to Mongo Atlas");
   }
 }
+
 module.exports = dbConnect;
