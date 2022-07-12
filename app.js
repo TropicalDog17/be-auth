@@ -26,31 +26,33 @@ app.get("/", (req, res, next) => {
   res.json({ message: "Hey! This is your server response!" });
   next();
 });
-app.post("/register", async (req, res) => {
+async function hashPassword(req, res, next) {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 8);
     const newUser = new User({
       email: req.body.email,
       password: hashedPassword,
     });
-    //Saving new user to db
-    try {
-      const result = await newUser.save();
-      return res.status(201).send({
-        message: "User created successfully",
-        result,
-      });
-    } catch (err) {
-      //Catch error if not save successfully
-      return res.status(500).send({
-        message: "Error creating user",
-        err,
-      });
-    }
+    req.newUser = newUser;
+    next();
   } catch (err) {
-    //Catch the error if not hashed successfully
+    return res
+      .status(500)
+      .send({ message: "Password was not hashed successfully", err });
+  }
+}
+app.post("/register", hashPassword, async (req, res) => {
+  //Saving new user to db
+  try {
+    const result = await newUser.save();
+    return res.status(201).send({
+      message: "User created successfully",
+      result,
+    });
+  } catch (err) {
+    //Catch error if not save successfully
     return res.status(500).send({
-      message: "Password was not hashed successfully",
+      message: "Error creating user",
       err,
     });
   }
